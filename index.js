@@ -5,13 +5,16 @@
  * Then addition and subtraction, from left to right
  */
 class SimpleAlgebra {
-	constructor(expression) {
+	constructor (expression) {
 		this.steps = [];
 		this.operations = [];
-		this.solve(expression);
+		//
+		expression = expression.replace(/\(([\d.]+)\)/g, '$1');
+		//
+		this.result = this.solve(expression);
 	}
 
-	basicOperation(a, b, operator) {
+	basicOperation (a, b, operator) {
 		a = parseFloat(a);
 		b = parseFloat(b);
 		operator = operator.toString().trim();
@@ -21,20 +24,16 @@ class SimpleAlgebra {
 		switch (operator) {
 			case '+':
 				return a + b;
-				break;
 			case '-':
 				return a - b;
-				break;
 			case '/':
 				return a / b;
-				break;
 			case '*':
 				return a * b;
-				break;
 		}
 	}
 
-	solve(expression) {		
+	solve (expression) {
 		expression = expression.replace(/[^\d\(\)\.\+\-\*\/]/g, '');
 		this.steps.push(expression);
 		var innerExp = expression.match(/\(([^\)(]+)\)/);
@@ -50,7 +49,7 @@ class SimpleAlgebra {
 		return expression;
 	}
 
-	algebraSequence(expression) {
+	algebraSequence (expression) {
 		let matchResult = null;
 		let operators = ['/', '*', '-', '+'];
 		operators.forEach(op => {
@@ -58,11 +57,13 @@ class SimpleAlgebra {
 				let regExp = new RegExp(`(\-*[\\d\\.]+)(\\s*\\${op}\\s*)([\\d\\.]+)`);
 				matchResult = expression.match(regExp);
 			}
-		})
+		});
 		let returnValue = expression;
 		if (matchResult) {
-			let operation = this.basicOperation(matchResult[1], matchResult[3], matchResult[2]).toString();
-			returnValue = returnValue.replace(matchResult[0], operation);
+			let operationResult = this.basicOperation(matchResult[1], matchResult[3], matchResult[2]);
+			this.operations[this.operations.length - 1].push('=');
+			this.operations[this.operations.length - 1].push(operationResult);
+			returnValue = returnValue.replace(matchResult[0], operationResult.toString());
 		}
 		// removendo parenteses desnecessários
 		matchResult = returnValue.match(/\(([\d.]+)\)/);
