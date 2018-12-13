@@ -1,0 +1,24 @@
+{
+  "name": "simplealgebra",
+  "version": "0.0.1",
+  "description": "Perform the operations inside a parenthesis first, Then exponents, Then multiplication and division, from left to right, Then addition and subtraction, from left to right.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bisk8s/SimpleAlgebra.git"
+  },
+  "keywords": [
+    "algebra",
+    "steps",
+    "math"
+  ],
+  "author": "Guilherme Lucena",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/bisk8s/SimpleAlgebra/issues"
+  },
+  "homepage": "https://github.com/bisk8s/SimpleAlgebra#readme"
+}
