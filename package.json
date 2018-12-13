@@ -1,6 +1,6 @@
 {
   "name": "simplealgebra",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Perform the operations inside a parenthesis first, Then exponents, Then multiplication and division, from left to right, Then addition and subtraction, from left to right.",
   "main": "index.js",
   "scripts": {
