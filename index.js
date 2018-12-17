@@ -30,11 +30,14 @@ class SimpleAlgebra {
 				return a / b;
 			case '*':
 				return a * b;
+      case '**':
+      case '^':
+				return Math.pow(a, b);
 		}
 	}
 
 	solve (expression) {
-		expression = expression.replace(/[^\d\(\)\.\+\-\*\/]/g, '');
+		expression = expression.replace(/[^\d\(\)\.\+\-\*\/\^]/g, ''); // scaped suported operators
 		this.steps.push(expression);
 		var innerExp = expression.match(/\(([^\)(]+)\)/);
 		if (innerExp) {
@@ -51,7 +54,7 @@ class SimpleAlgebra {
 
 	algebraSequence (expression) {
 		let matchResult = null;
-		let operators = ['/', '*', '-', '+'];
+		let operators = [ '^', '**', '/', '*', '-', '+']; // operators in inportance order
 		operators.forEach(op => {
 			if (!matchResult) {
 				let regExp = new RegExp(`(\-*[\\d\\.]+)(\\s*\\${op}\\s*)([\\d\\.]+)`);
@@ -60,6 +63,7 @@ class SimpleAlgebra {
 		});
 		let returnValue = expression;
 		if (matchResult) {
+      console.log(matchResult);
 			let operationResult = this.basicOperation(matchResult[1], matchResult[3], matchResult[2]);
 			this.operations[this.operations.length - 1].push('=');
 			this.operations[this.operations.length - 1].push(operationResult);
