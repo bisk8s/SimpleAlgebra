@@ -22,6 +22,7 @@ class SimpleAlgebra {
 		this.operations.push([a, operator, b]);
 		//
 		switch (operator) {
+      default:
 			case '+':
 				return a + b;
 			case '-':
@@ -40,30 +41,29 @@ class SimpleAlgebra {
 		expression = expression.replace(/[^\d\(\)\.\+\-\*\/\^]/g, ''); // scaped suported operators
 		this.steps.push(expression);
 		var innerExp = expression.match(/\(([^\)(]+)\)/);
-		if (innerExp) {
-			expression = innerExp.input.replace(innerExp[0], this.algebraSequence(innerExp[0]));
+		if (innerExp) { 
+			expression = innerExp.input.replace(innerExp[0], this.algebralOperation(innerExp[0]));
 		} else {
-			expression = this.algebraSequence(expression);
+			expression = this.algebralOperation(expression);
 		}
-		let matchResult = expression.match(/^([\d.]+)$/);
-		if (!matchResult) {
+		if (isNaN(Number(expression))) {
 			expression = this.solve(expression);
 		}
 		return expression;
 	}
 
-	algebraSequence (expression) {
+	algebralOperation (expression) {
 		let matchResult = null;
 		let operators = [ '^', '**', '/', '*', '-', '+']; // operators in inportance order
 		operators.forEach(op => {
 			if (!matchResult) {
-				let regExp = new RegExp(`(\-*[\\d\\.]+)(\\s*\\${op}\\s*)([\\d\\.]+)`);
+        let regexpstr = `(\-*[\\d\\.]+)(\\s*\\${op.split('').join('\\')}\\s*)([\\d\\.]+)`;
+				let regExp = new RegExp(regexpstr);
 				matchResult = expression.match(regExp);
 			}
 		});
 		let returnValue = expression;
 		if (matchResult) {
-      console.log(matchResult);
 			let operationResult = this.basicOperation(matchResult[1], matchResult[3], matchResult[2]);
 			this.operations[this.operations.length - 1].push('=');
 			this.operations[this.operations.length - 1].push(operationResult);
